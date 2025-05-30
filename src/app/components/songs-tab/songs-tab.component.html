@@ -1,0 +1,31 @@
+<!-- songs-tab.component.html -->
+<div class="songs-container">
+  <div class="songs-header">
+    <h2>Songs</h2>
+    <span class="count">{{ filteredSongs.length }} songs</span>
+  </div>
+
+  <div class="songs-content">
+    <app-song-form
+      [isLoading]="isLoading"
+      (songCreated)="onSongCreated($event)"
+    ></app-song-form>
+
+    <app-song-list
+      [songs]="filteredSongs"
+      [isLoading]="isLoading"
+      (searchChanged)="onSearchChanged($event)"
+      (songDeleted)="onSongDeleted($event)"
+      (songEdit)="onSongEdit($event)"
+    ></app-song-list>
+  </div>
+
+  <!-- Edit Modal -->
+  <app-song-edit-modal
+    *ngIf="showEditModal"
+    [song]="editingSong"
+    [isLoading]="isLoading"
+    (songUpdated)="onSongUpdated($event)"
+    (modalClosed)="onEditModalClosed()"
+  ></app-song-edit-modal>
+</div>

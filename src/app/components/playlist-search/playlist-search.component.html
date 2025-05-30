@@ -1,0 +1,106 @@
+<div class="playlists-search-section">
+  <div class="playlists-search-header">
+    <mat-icon>search</mat-icon>
+    <h3>Search Playlists</h3>
+  </div>
+
+  <mat-form-field appearance="outline" class="playlists-search-field">
+    <input
+      matInput
+      [ngModel]="searchTerm"
+      (ngModelChange)="onSearchChange($event)"
+      placeholder="Type to search playlists"
+      aria-label="Search playlists"
+      role="searchbox"
+    />
+    <mat-icon matPrefix>search</mat-icon>
+    <button
+      mat-icon-button
+      matSuffix
+      *ngIf="searchTerm"
+      (click)="clearSearch()"
+      aria-label="Clear search"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<!-- Results Section -->
+<div
+  class="playlists-results"
+  *ngIf="searchTerm || filteredPlaylists.length > 0"
+>
+  <div class="playlists-results-header">
+    <h4>Playlists</h4>
+    <div class="results-count">
+      {{ filteredPlaylists.length }} playlist{{
+        filteredPlaylists.length !== 1 ? "s" : ""
+      }}
+      found
+    </div>
+  </div>
+
+  <!-- Playlists List -->
+  <div class="playlists-list" *ngIf="filteredPlaylists.length > 0">
+    <div
+      class="playlist-item"
+      *ngFor="let playlist of filteredPlaylists; trackBy: trackByPlaylistId"
+    >
+      <div class="playlist-info">
+        <div class="playlist-icon">
+          <mat-icon>queue_music</mat-icon>
+        </div>
+        <div class="playlist-details">
+          <h5>{{ playlist.name }}</h5>
+          <p>{{ playlist.description || "No description" }}</p>
+        </div>
+      </div>
+
+      <div class="playlist-meta">
+        <div class="playlist-song-count">
+          {{ getPlaylistSongCount(playlist.id) }} song{{
+            getPlaylistSongCount(playlist.id) !== 1 ? "s" : ""
+          }}
+        </div>
+      </div>
+
+      <div class="playlist-actions">
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="editPlaylist(playlist)"
+          title="Edit playlist"
+          class="action-btn edit-btn"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="selectPlaylist(playlist)"
+        >
+          <mat-icon>visibility</mat-icon>
+          Select
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Results -->
+  <div
+    class="playlists-no-results"
+    *ngIf="filteredPlaylists.length === 0 && searchTerm"
+  >
+    <mat-icon>search_off</mat-icon>
+    <h4>No playlists found</h4>
+    <p>Try adjusting your search terms</p>
+  </div>
+</div>
+
+<!-- Initial State -->
+<div class="empty-state" *ngIf="!searchTerm && playlists.length === 0">
+  <mat-icon>queue_music</mat-icon>
+  <h3>No Playlists Available</h3>
+  <p>Start by creating your first playlist below</p>
+</div>

@@ -1,0 +1,75 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Edit Song</h3>
+      <button type="button" class="close-btn" (click)="onClose()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="edit-title">Title</label>
+          <input
+            id="edit-title"
+            type="text"
+            formControlName="title"
+            placeholder="Enter song title"
+            [class.error]="
+              editForm.get('title')?.invalid && editForm.get('title')?.touched
+            "
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              editForm.get('title')?.hasError('required') &&
+              editForm.get('title')?.touched
+            "
+          >
+            Title is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-artist">Artist</label>
+          <input
+            id="edit-artist"
+            type="text"
+            formControlName="artist"
+            placeholder="Enter artist name"
+            [class.error]="
+              editForm.get('artist')?.invalid && editForm.get('artist')?.touched
+            "
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              editForm.get('artist')?.hasError('required') &&
+              editForm.get('artist')?.touched
+            "
+          >
+            Artist is required
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="isLoading"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="editForm.invalid || isLoading"
+          >
+            <span *ngIf="isLoading" class="loading-text">Updating...</span>
+            <span *ngIf="!isLoading">Update Song</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

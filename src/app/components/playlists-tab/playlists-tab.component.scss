@@ -1,0 +1,138 @@
+.tab-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  min-height: calc(100vh - 120px);
+}
+
+.playlists-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .header-text {
+      h2 {
+        margin: 0 0 4px 0;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 20px;
+
+    .stat-item {
+      text-align: center;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+
+      .stat-number {
+        display: block;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .stat-label {
+        display: block;
+        font-size: 12px;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+.playlists-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .playlists-content {
+    grid-template-columns: 400px 1fr;
+
+    .playlists-sidebar {
+      order: 1;
+    }
+
+    .playlists-main {
+      order: 2;
+    }
+  }
+}
+
+.playlists-sidebar,
+.playlists-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-content {
+    padding: 16px;
+  }
+
+  .playlists-header {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+
+    .header-stats {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      .stat-item {
+        flex: 1;
+        min-width: 100px;
+      }
+    }
+  }
+}

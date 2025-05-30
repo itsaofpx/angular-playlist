@@ -1,0 +1,85 @@
+<div class="tab-content">
+  <!-- Header Section -->
+  <div class="playlists-header">
+    <div class="header-content">
+      <mat-icon>queue_music</mat-icon>
+      <div class="header-text">
+        <h2>My Playlists</h2>
+        <p>Organize and manage your music collections</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-item">
+        <span class="stat-number">{{ playlists.length }}</span>
+        <span class="stat-label">Total Playlists</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ filteredPlaylists.length }}</span>
+        <span class="stat-label">Showing</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ getTotalSongs() }}</span>
+        <span class="stat-label">Total Songs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="playlists-content">
+    <!-- Sidebar -->
+    <div class="playlists-sidebar">
+      <!-- Form Section -->
+      <div class="section-card">
+        <app-playlist-form
+          [isLoading]="isLoading"
+          (playlistCreated)="onPlaylistCreated($event)"
+        >
+        </app-playlist-form>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="playlists-main">
+      <!-- Search Section -->
+      <div class="section-card">
+        <app-playlist-search
+          [playlists]="playlists"
+          [filteredPlaylists]="filteredPlaylists"
+          [searchTerm]="playlistSearchTerm"
+          [playlistSongCounts]="playlistSongCounts"
+          (searchChanged)="onSearchChanged($event)"
+          (playlistSelected)="onPlaylistSelected($event)"
+          (playlistEdit)="onPlaylistEdit($event)"
+        >
+        </app-playlist-search>
+      </div>
+    </div>
+  </div>
+
+  <!-- Playlist Details Modal -->
+  <app-playlist-modal
+    *ngIf="showPlaylistModal"
+    [playlist]="selectedModalPlaylist"
+    [songs]="modalPlaylistSongs"
+    [availableSongs]="availableSongs"
+    [isLoading]="isLoadingModalPlaylistSongs"
+    (closed)="onModalClosed()"
+    (songAdded)="onSongAddedToPlaylist($event)"
+    (songRemoved)="onSongRemovedFromPlaylist($event)"
+    (playlistDeleted)="onPlaylistDeleted($event)"
+  >
+  </app-playlist-modal>
+
+  <!-- Edit Playlist Modal -->
+  <app-playlist-edit-modal
+    [isVisible]="showEditModal"
+    [playlist]="selectedEditPlaylist"
+    [songCount]="
+      selectedEditPlaylist ? getPlaylistSongCount(selectedEditPlaylist.id) : 0
+    "
+    [isSubmitting]="isSubmittingEdit"
+    (modalClosed)="onEditModalClosed()"
+    (playlistUpdated)="onPlaylistUpdated($event)"
+  >
+  </app-playlist-edit-modal>
+</div>

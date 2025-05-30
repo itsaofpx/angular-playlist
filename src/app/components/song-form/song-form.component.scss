@@ -1,0 +1,134 @@
+.song-form {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+
+  h3 {
+    margin: 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+
+  &.error {
+    border-color: #dc3545;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.error-message {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #dc3545;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+
+  &:hover:not(:disabled) {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-primary {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+
+  &:hover:not(:disabled) {
+    background: #0056b3;
+    border-color: #0056b3;
+  }
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: #fff;
+  border-color: #6c757d;
+
+  &:hover:not(:disabled) {
+    background: #545b62;
+    border-color: #545b62;
+  }
+}
+
+.loading-text {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .song-form {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

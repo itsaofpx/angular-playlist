@@ -1,0 +1,69 @@
+<div class="song-list">
+  <div class="list-header">
+    <h3>Song List</h3>
+    <div class="search-section">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Search songs..."
+        class="search-input"
+      />
+      <button
+        *ngIf="searchTerm"
+        (click)="clearSearch()"
+        class="clear-btn"
+        title="Clear search"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <p>Loading songs...</p>
+  </div>
+
+  <!-- Songs -->
+  <div class="songs" *ngIf="!isLoading && songs.length > 0">
+    <div class="song-item" *ngFor="let song of songs; trackBy: trackBySong">
+      <div class="song-info">
+        <div class="song-icon">♪</div>
+        <div class="song-details">
+          <h4>{{ song.title }}</h4>
+          <p>{{ song.artist }}</p>
+        </div>
+      </div>
+      <div class="song-actions">
+        <button
+          (click)="onEditSong(song)"
+          class="action-btn edit-btn"
+          title="Edit song"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          (click)="onDeleteSong(song)"
+          class="action-btn delete-btn"
+          title="Delete song"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && songs.length === 0">
+    <div class="empty-icon">♪</div>
+    <h4>{{ searchTerm ? "No songs found" : "No songs yet" }}</h4>
+    <p>
+      {{
+        searchTerm
+          ? "Try a different search term"
+          : "Add your first song using the form above"
+      }}
+    </p>
+  </div>
+</div>

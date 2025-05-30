@@ -1,0 +1,49 @@
+<div class="dialog-overlay" (click)="closeDialog()">
+  <mat-card class="add-songs-dialog" (click)="$event.stopPropagation()">
+    <mat-card-header>
+      <mat-card-title>Add Songs to "{{ playlist?.name }}"</mat-card-title>
+      <mat-card-subtitle
+        >Select songs to add to this playlist</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="availableSongs.length > 0; else noAvailableSongs">
+        <div class="available-songs">
+          <div class="available-song-item" *ngFor="let song of availableSongs">
+            <div class="song-info">
+              <div class="song-details">
+                <h4>{{ song.title }}</h4>
+                <p>{{ song.artist }}</p>
+              </div>
+            </div>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="addSong(song.id)"
+              [disabled]="isSongBeingAdded(song.id)"
+            >
+              <mat-spinner
+                *ngIf="isSongBeingAdded(song.id)"
+                diameter="20"
+              ></mat-spinner>
+              <mat-icon *ngIf="!isSongBeingAdded(song.id)">add</mat-icon>
+              {{ isSongBeingAdded(song.id) ? "Adding..." : "Add" }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noAvailableSongs>
+        <div class="no-available-songs">
+          <mat-icon>check_circle</mat-icon>
+          <p>All songs are already in this playlist!</p>
+        </div>
+      </ng-template>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button (click)="closeDialog()">Close</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
