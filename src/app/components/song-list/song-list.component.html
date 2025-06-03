@@ -26,8 +26,11 @@
   </div>
 
   <!-- Songs -->
-  <div class="songs" *ngIf="!isLoading && songs.length > 0">
-    <div class="song-item" *ngFor="let song of songs; trackBy: trackBySong">
+  <div class="songs" *ngIf="!isLoading && paginatedSongs.length > 0">
+    <div
+      class="song-item"
+      *ngFor="let song of paginatedSongs; trackBy: trackBySong"
+    >
       <div class="song-info">
         <div class="song-icon">♪</div>
         <div class="song-details">
@@ -52,6 +55,31 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-controls" *ngIf="!isLoading">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+
+    <ng-container *ngFor="let page of paginationArray">
+      <button
+        *ngIf="typeof page === 'number' && page !== currentPage"
+        (click)="goToPage(page)"
+        class="page-btn"
+      >
+        {{ page }}
+      </button>
+      <span *ngIf="page === '...'">...</span>
+      <button *ngIf="page === currentPage" class="current-page-btn" disabled>
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
   </div>
 
   <!-- Empty State -->

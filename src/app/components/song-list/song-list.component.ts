@@ -20,6 +20,46 @@ export class SongListComponent {
 
   searchTerm = '';
 
+  currentPage = 1;
+  itemsPerPage = 8;
+  totalPages = 0;
+
+  get paginatedSongs() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.songs.slice(start, start + this.itemsPerPage);
+  }
+
+  get paginationArray(): (number | string)[] {
+    const pages: (number | string)[] = [];
+    const totalPages = this.totalPages;
+    const currentPage = this.currentPage;
+
+    pages.push(1);
+
+    if (currentPage > 4) {
+      pages.push('...');
+    }
+
+    for (
+      let i = Math.max(2, currentPage - 1);
+      i <= Math.min(totalPages - 1, currentPage + 1);
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    if (currentPage < totalPages - 3) {
+      pages.push('...');
+    }
+
+    // Always show the last page
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  }
+
   trackBySong(index: number, song: Song): string {
     return song.id;
   }
@@ -41,5 +81,29 @@ export class SongListComponent {
     if (confirm(`Are you sure you want to delete "${song.title}"?`)) {
       this.songDeleted.emit(song.id);
     }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  goToPage(page: string | number) {
+    this.currentPage = Number(page);
+  }
+
+  updateTotalPages() {
+    this.totalPages = Math.ceil(this.songs.length / this.itemsPerPage);
+  }
+
+  ngOnChanges() {
+    this.updateTotalPages();
   }
 }

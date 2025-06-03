@@ -1,4 +1,3 @@
-// songs-tab.component.ts
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -30,6 +29,11 @@ export class SongsTabComponent implements OnInit {
   editingSong: Song | null = null;
   showEditModal = false;
 
+  // Pagination variables
+  itemsPerPage = 5; // Number of items per page
+  totalPages = 0; // Total number of pages
+  currentPage = 1; // Current page number
+
   constructor(private apiService: ApiService, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
@@ -42,6 +46,7 @@ export class SongsTabComponent implements OnInit {
       next: (songs) => {
         this.songs = songs;
         this.filterSongs();
+        this.updateTotalPages(); // Update total pages after loading songs
         this.isLoading = false;
       },
       error: (error) => {
@@ -52,12 +57,17 @@ export class SongsTabComponent implements OnInit {
     });
   }
 
+  private updateTotalPages() {
+    this.totalPages = Math.ceil(this.songs.length / this.itemsPerPage);
+  }
+
   onSongCreated(songData: { title: string; artist: string }) {
     this.isLoading = true;
     this.apiService.createSong(songData).subscribe({
       next: (song) => {
         this.songs.push(song);
         this.filterSongs();
+        this.updateTotalPages(); // Update total pages after adding song
         this.isLoading = false;
 
         this.showMessage(
@@ -102,6 +112,7 @@ export class SongsTabComponent implements OnInit {
         if (index !== -1) {
           this.songs[index] = updatedSong;
           this.filterSongs();
+          this.updateTotalPages(); // Update total pages after updating song
         }
 
         this.showMessage(
@@ -115,7 +126,6 @@ export class SongsTabComponent implements OnInit {
         console.error('Error updating song:', error);
         this.isLoading = false;
 
-        // Handle duplicate error on update
         if (error.status === 409) {
           const errorMessage =
             error.error?.message ||
@@ -138,6 +148,7 @@ export class SongsTabComponent implements OnInit {
       next: () => {
         this.songs = this.songs.filter((s) => s.id !== songId);
         this.filterSongs();
+        this.updateTotalPages(); // Update total pages after deleting song
         this.showMessage('🗑️ Song deleted successfully!', 'success');
       },
       error: (error) => {
@@ -169,25 +180,26 @@ export class SongsTabComponent implements OnInit {
   private filterSongs() {
     if (!this.searchTerm.trim()) {
       this.filteredSongs = [...this.songs];
-      return;
+    } else {
+      const term = this.searchTerm.toLowerCase();
+      this.filteredSongs = this.songs.filter(
+        (song) =>
+          song.title.toLowerCase().includes(term) ||
+          song.artist.toLowerCase().includes(term)
+      );
     }
-
-    const term = this.searchTerm.toLowerCase();
-    this.filteredSongs = this.songs.filter(
-      (song) =>
-        song.title.toLowerCase().includes(term) ||
-        song.artist.toLowerCase().includes(term)
-    );
+    this.updateTotalPages(); // Update total pages after filtering
   }
 
   private showDuplicateAlert(message: string) {
     this.snackBar.open(message, '❌ Close', {
-      duration: 6000, // Longer duration for important errors
+      duration: 6000,
       panelClass: ['snackbar-duplicate'],
       horizontalPosition: 'center',
       verticalPosition: 'top',
     });
   }
+
   private showMessage(
     message: string,
     type: 'success' | 'error' | 'warning' = 'success'
